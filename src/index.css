@@ -1,13 +1,36 @@
-body {
+html{
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after{
+  box-sizing: inherit;
+}
+/*  //////////////////////////////////////////// */
+/* глобальные значения */
+p{
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+}
+.container{
+  max-width: 800px;
+  padding: 0 15px;
+  margin: 0 auto;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.btn{
+  display: inline-block;
+  padding: 10px 30px;
+  background-color: rgb(64, 66, 182);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+}
+
+.nav{
+  display: flex;
+  justify-content: center;
+}
+.nav__item{
+  padding: 16px 20px;
 }

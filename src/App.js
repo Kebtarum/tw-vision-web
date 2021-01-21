@@ -1,25 +1,74 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { Route, HashRouter, NavLink, Redirect } from 'react-router-dom';
+import store from './redux/redux-store'
+import { Provider, connect } from 'react-redux';
+import MainPageContainer from './Components/MainPage/MainPageContainer';
+import Login from './Components/Login/Login';
+import SignUp from './Components/SignUp/SignUp';
+import { authSuccess } from './redux/authReducer'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+//   componentDidMount() {
+
+//     // this.refreshProfile()
+    
+//     // let {savedToken} = this.props;
+//     // if(!savedToken){
+//     //     return <Redirect to={'/'} /> 
+//     // }
+    
+
+//     this.props.getUser(localStorage.token_userId, localStorage.token_access)
+//         .catch(()=> this.props.history.push('/login'))        
+// }
+  render() {
+    const token = localStorage.token_access;
+    if (token) {
+      this.props.authSuccess(token)
+    }
+
+    return (
+      <div className="App">
+        {/* <div className='nav'>
+          <NavLink className='nav__item' to='/'>Перейти в MainPage</NavLink>
+          <NavLink className='nav__item' to='/signup'>Перейти в SignUp</NavLink>
+          <NavLink className='nav__item' to='/login'>Перейти в Login</NavLink>
+        </div> */}
+
+        <Route exact path="/">
+          <MainPageContainer />
+        </Route>
+        <Route path="/signup">
+          <SignUp />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+      </div>
+    );
+  }
+
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const AppContainer = connect(mapStateToProps, {authSuccess})(App);
+
+const FinalJSApp = (props) => {
+  return (
+
+    <Provider store={store}>
+      <HashRouter>
+        <AppContainer />
+      </HashRouter>
+    </Provider>
+
+  )
+}
+
+export default FinalJSApp;
