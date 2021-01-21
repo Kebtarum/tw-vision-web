@@ -12,7 +12,7 @@ function SignUp(props) {
         props.registerMe(formData)
             .then(()=> props.history.push('/login'))
             .catch(err => {
-                let errMessage = []
+                let errMessage = ["Ошибка!"]
                 // console.log.apply(err.response.data)
 
                 err.response.data.user.email && errMessage.push('Поле Адерес электронной почты: ' + err.response.data.user.email + '\n')

@@ -8,10 +8,14 @@ import { compose } from 'redux';
 
 function Login(props) {
 
+    const required = value => (value ? undefined : 'Обязателен для заполнения')
+    
     const onSubmit = (formData) => {
         props.giveToken(formData.username, formData.password)
             .then(()=> props.history.push('/'))
-            .catch(err => {alert('vavava?')})
+            .catch(err => {
+                console.log(err)
+                alert('err')})
     }
 
     if (props.isAuth) {
@@ -31,11 +35,11 @@ function Login(props) {
                         <form className='form' onSubmit={props.handleSubmit}>
                             <div className='form__item'>
                                 <label className="form__label">Электронная почта</label>
-                                <Field className="form__input" name="username" component="input" placeholder="Email" type="email" />
+                                <Field className="form__input" name="username" component="input" placeholder="Email" type="email" validate={required} />
                             </div>
                             <div className='form__item'>
                                 <label className="form__label">Пароль</label>
-                                <Field className="form__input" name="password" component="input" placeholder="Пароль" type="password" />
+                                <Field className="form__input" name="password" component="input" placeholder="Пароль" type="password" validate={required} />
                             </div>
                             <button className='btn form__btn' type="submit">Submit</button>
                         </form>
