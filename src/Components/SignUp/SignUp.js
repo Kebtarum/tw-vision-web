@@ -8,20 +8,40 @@ import { compose } from 'redux';
 
 function SignUp(props) {
 
+    function toArray(obj, buf = '') {
+        const result = [];
+        for (const prop in obj) {
+            const value = obj[prop];
+            
+            if (typeof value === 'object') {
+                buf = prop;
+                result.push(toArray(value,buf)); // <- recursive call
+                
+            }
+            else {
+                result.push(buf);
+                result.push(value);
+            }
+        }
+        return result;
+    }
+
     const onSubmit = (formData) => {
         props.registerMe(formData)
             .then(()=> props.history.push('/login'))
             .catch(err => {
                 let errMessage = ["Ошибка!"]
                 // console.log.apply(err.response.data)
-
-                err.response.data.user.email && errMessage.push('Поле Адерес электронной почты: ' + err.response.data.user.email + '\n')
-                err.response.data.user.password && errMessage.push('Поле Пароль: ' + err.response.data.user.password + '\n')
-                err.response.data.invited_by && errMessage.push('Поле Invited by: ' + err.response.data.invited_by + '\n')
-                err.response.data.name && errMessage.push('Поле Ваше имя: ' + err.response.data.name + '\n')
-                err.response.data.surname && errMessage.push('Поле Ваша фамилия: ' + err.response.data.surname + '\n')
-                err.response.data.country_key && errMessage.push('Поле Ключ страны: ' + err.response.data.country_key + '\n')
-                alert(errMessage)
+                // if(err.response.data.user.email ){
+                //     errMessage.push('Поле Адерес электронной почты: ' + err.response.data.user.email + '\n')
+                // }
+                // err.response.data.user.email && errMessage.push('Поле Адерес электронной почты: ' + err.response.data.user.email + '\n')
+                // err.response.data.user.password && errMessage.push('Поле Пароль: ' + err.response.data.user.password + '\n')
+                // err.response.data.invited_by && errMessage.push('Поле Invited by: ' + err.response.data.invited_by + '\n')
+                // err.response.data.name && errMessage.push('Поле Ваше имя: ' + err.response.data.name + '\n')
+                // err.response.data.surname && errMessage.push('Поле Ваша фамилия: ' + err.response.data.surname + '\n')
+                // err.response.data.country_key && errMessage.push('Поле Ключ страны: ' + err.response.data.country_key + '\n')
+                alert(toArray(err.response.data))
             })
     }
 
@@ -49,9 +69,8 @@ function SignUp(props) {
                                 <Field className="form__input" name="phone" component="input" placeholder="Телефон" />
                             </div>
                             <div className='form__item'>
-                                <label className="form__label">Invited by</label>
-                                <Field className="form__input" name="invited_by" component="select" placeholder="Пригласительный код">
-                                    <option selected value="RU-637164">RU-637164</option>
+                                <label className="form__label">Invited by (RU-637164)</label>
+                                <Field value="RU-637164" className="form__input" name="invited_by" component="input" placeholder="Пригласительный код">
                                 </Field>
                             </div>
                             <div className='form__item'>
@@ -64,8 +83,7 @@ function SignUp(props) {
                             </div>
                             <div className='form__item'>
                                 <label className="form__label">Двухбуквенный код страны</label>
-                                <Field className="form__input" name="country_key" component="select" placeholder="код страны">
-                                <option selected value="RU">RU</option>
+                                <Field className="form__input" name="country_key" component="input" placeholder="код страны">
                                 </Field>
                             </div>
                             <button className='btn form__btn' type="submit">Submit</button>
